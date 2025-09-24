@@ -70,11 +70,11 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /et
 # Install the PHP extensions for SQL Server
 RUN pecl install sqlsrv pdo_sqlsrv
 
-# Enable the SQL Server extensions in PHP
-RUN echo 'extension=sqlsrv.so' >> /etc/php/8.4/cli/php.ini \
-    && echo 'extension=pdo_sqlsrv.so' >> /etc/php/8.4/cli/php.ini \
-    && mkdir -p /etc/php/8.4/fpm \
-    && cp /etc/php/8.4/cli/php.ini /etc/php/8.4/fpm/php.ini
+# Enable the SQL Server extensions in PHP using proper method
+RUN echo 'extension=sqlsrv.so' > /etc/php/8.4/mods-available/sqlsrv.ini \
+    && echo 'extension=pdo_sqlsrv.so' > /etc/php/8.4/mods-available/pdo_sqlsrv.ini \
+    && phpenmod sqlsrv pdo_sqlsrv \
+    && mkdir -p /etc/php/8.4/fpm
 
 RUN userdel -r ubuntu
 RUN groupadd --force -g $WWWGROUP sail
