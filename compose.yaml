@@ -1,5 +1,5 @@
 services:
-    laravel.test:
+    checkup.web:
         build:
             context: './docker/8.4'
             dockerfile: Dockerfile
@@ -52,6 +52,21 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    queue-worker:
+        build:
+            context: './docker/8.4'
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: 'sail-8.4/app'
+        command: 'php artisan queue:work'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+            - checkup.web
     redis:
         image: 'redis:alpine'
         ports:

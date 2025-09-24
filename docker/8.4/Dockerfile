@@ -59,6 +59,23 @@ RUN apt-get update && apt-get upgrade -y \
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.4
 
+RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.4
+
+# Install ODBC Driver and SQL Server Driver for PHP
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/keyrings/microsoft.gpg \
+    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/24.04/prod noble main" > /etc/apt/sources.list.d/microsoft-prod.list \
+    && apt-get update \
+    && ACCEPT_EULA=Y apt-get install -y msodbcsql18 unixodbc-dev
+
+# Install the PHP extensions for SQL Server
+RUN pecl install sqlsrv pdo_sqlsrv
+
+# Enable the SQL Server extensions in PHP
+RUN echo 'extension=sqlsrv.so' >> /etc/php/8.4/cli/php.ini \
+    && echo 'extension=pdo_sqlsrv.so' >> /etc/php/8.4/cli/php.ini \
+    && mkdir -p /etc/php/8.4/fpm \
+    && cp /etc/php/8.4/cli/php.ini /etc/php/8.4/fpm/php.ini
+
 RUN userdel -r ubuntu
 RUN groupadd --force -g $WWWGROUP sail
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
