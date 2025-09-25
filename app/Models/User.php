@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -9,40 +8,40 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
+        'userid',
         'name',
-        'email',
-        'password',
+        'position',
+        'department',
+        'division',
+        'station',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $appends = [
+        'stationRedirect',
+    ];
+
+    public function getStationRedirectAttribute()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        $station = $this->station;
+        switch ($station) {
+            case 'vs':
+                $link = route('stations.vs');
+                break;
+            case 'lab':
+                $link = route('stations.lab');
+                break;
+            default:
+                $link = route('stations.index');
+                break;
+        }
+
+        return $link;
     }
 }
