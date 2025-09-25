@@ -31,14 +31,11 @@ class User extends Authenticatable
     {
         $station = $this->station;
         switch ($station) {
-            case 'vs':
-                $link = route('stations.vs');
-                break;
-            case 'lab':
-                $link = route('stations.lab');
+            case null:
+                $link = route('stations.index');
                 break;
             default:
-                $link = route('stations.index');
+                $link = route('stations.view', $station);
                 break;
         }
 
