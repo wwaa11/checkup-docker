@@ -116,10 +116,10 @@ return [
         'SSB'     => [
             'driver'                   => 'sqlsrv',
             'host'                     => env('DB_HOST_SSB', 'localhost'),
-            'port'                     => env('DB_PORT', '1433'),
+            'port'                     => env('DB_PORT_SSB', '1433'),
             'database'                 => env('DB_DATABASE_SSB', 'forge'),
-            'username'                 => env('DB_USERNAME', 'forge'),
-            'password'                 => env('DB_PASSWORD', ''),
+            'username'                 => env('DB_USERNAME_SSB', 'forge'),
+            'password'                 => env('DB_PASSWORD_SSB', ''),
             'charset'                  => 'utf8',
             'prefix'                   => '',
             'prefix_indexes'           => true,
