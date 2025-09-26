@@ -1,4 +1,4 @@
-@extends("layout.app")
+@extends("layouts.app")
 @section("content")
     <h1>Station Index</h1>
     <ul>

@@ -1,4 +1,4 @@
-@extends("layout.app")
+@extends("layouts.app")
 @section("content")
     <select id="station-select" name="station" onchange="chageStation()">
         @foreach ($allStations as $selectStation)

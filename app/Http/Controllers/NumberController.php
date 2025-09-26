@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Events\NumberBroadcast;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class NumberController extends Controller
 {
@@ -13,6 +12,7 @@ class NumberController extends Controller
      */
     public function sendPage()
     {
+
         return view('send');
     }
 
@@ -21,6 +21,7 @@ class NumberController extends Controller
      */
     public function receivePage()
     {
+
         return view('receive');
     }
 
@@ -34,14 +35,14 @@ class NumberController extends Controller
         ]);
 
         $number = $request->input('number');
-        
+
         // Broadcast the number to all connected users
         broadcast(new NumberBroadcast($number, 'user1'));
 
         return response()->json([
             'success' => true,
             'message' => 'Number sent successfully',
-            'number' => $number,
+            'number'  => $number,
         ]);
     }
 }
